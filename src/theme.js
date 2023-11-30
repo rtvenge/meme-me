@@ -3,7 +3,6 @@ export function getThemeToggle() {
   const toggle = document.getElementById("toggle");
 
   const toggleDarkMode = () => {
-    console.log('chnaged')
     const newTheme = toggle.checked ? "dark" : "light";
     doc.setAttribute("data-theme", newTheme);
   };
@@ -14,7 +13,7 @@ export function getThemeToggle() {
     toggle.checked = true;
   } else {
     toggle.checked = false;
-    toggle.dispatchEvent(new Event('change'));
+    toggleDarkMode();
   }
 
   return toggle;
