@@ -73,9 +73,40 @@ async function setupTakeSelfie() {
   });
 }
 
+async function setupSaveImage() {
+  const downloadPhoto = document.getElementById("download-photo");
+  const shareButton = document.getElementById("share-image");
+
+  const downloadPhotoModal = new Modal(
+    "Share Image",
+    downloadPhoto,
+    downloadPhoto.querySelector(".modal-content")
+  );
+  downloadPhotoModal.render();
+
+  shareButton.addEventListener('click', async () => {
+    if (navigator.share) {
+      try {
+        const base64url = document.getElementById('meme').toDataURL();
+        const blob = await (await fetch(base64url)).blob();
+        const file = new File([blob], 'meme.png', { type: blob.type });
+
+        await navigator.share({
+          title: 'Meme',
+          text: 'Check out my meme!',
+          files: [file],
+        });
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  });
+}
+
 // IIFE in case we don't have top-level await
 (async function run() {
   setupSettings();
   setupAddText();
   await setupTakeSelfie();
+  setupSaveImage();
 })();
